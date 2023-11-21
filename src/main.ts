@@ -1,12 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dynamoose from 'dynamoose';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 async function bootstrap() {
+  console.info(process.env.AWS_SECRET_KEY);
   dynamoose.aws.sdk.config.update({
-    accessKeyId: 'AKIAYEBJVE4242W7VYMC',
-    secretAccessKey: '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',
-    region: 'ap-northeast-2',
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    region: process.env.AWS_REGION,
   });
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);

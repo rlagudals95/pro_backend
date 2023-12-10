@@ -6,6 +6,6 @@ export class HealthController {
 
   @Get()
   check() {
-    return 'alive';
+    return { data: 'alive' };
   }
 }

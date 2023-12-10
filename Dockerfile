@@ -1,12 +1,30 @@
-FROM node:18.18.2
+## docker build . -t nest_start:hmk
+## docker run -p 5000:8080 nest_start
 
-RUN mkdir -p /var/app
-WORKDIR /var/app
+# Use the official Node.js image as the base image
+FROM node:14-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy Nest.js application files to the container
 COPY . .
 
-RUN npm i -g npm@9.8.1
-RUN npm install
-RUN npm run build
+# Expose the port that your Nest.js app will run on
+EXPOSE 80
 
-EXPOSE 8080
-CMD [ "node", "dist/main.js" ]
+# Specify the default environment (dev by default)
+# ARG NODE_ENV=dev
+# ENV NODE_ENV=${NODE_ENV}
+
+# Copy the environment-specific configuration file
+# COPY .env.${NODE_ENV} .env
+
+# Command to run your Nest.js application
+CMD ["npm", "run", "start:docker"]
